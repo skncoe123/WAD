@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Registration</title>
+</head>
+<body>
+  <h2>User Registration</h2>
+  <form id="registrationForm">
+    <label>Name: <input type="text" id="name" required></label><br><br>
+    <label>Email: <input type="email" id="email" required></label><br><br>
+    <label>Password: <input type="password" id="password" required></label><br><br>
+    <button type="submit">Register</button>
+  </form>
+
+  <script>
+    const userArray = JSON.parse(localStorage.getItem("users")) || [];
+
+    document.getElementById("registrationForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      const user = { name, email, password };
+
+      // Push to local array and localStorage
+      userArray.push(user);
+      localStorage.setItem("users", JSON.stringify(userArray));
+
+      // AJAX POST (simulated – no server here, but ready for integration)
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "https://example.com/api/register", true); // Replace with actual endpoint
+      xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          console.log("User registered successfully.");
+        }
+      };
+      xhr.send(JSON.stringify(user));
+
+      // Redirect to list page
+      window.location.href = "userlist.html";
+    });
+  </script>
+</body>
+</html>
